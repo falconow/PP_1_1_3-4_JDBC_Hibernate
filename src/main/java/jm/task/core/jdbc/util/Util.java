@@ -9,9 +9,9 @@ public class Util {
     public static Connection getMySQLConnection() throws SQLException, ClassNotFoundException {
 
         String hostName = "localhost";
-        String dbName = "simplehr";
+        String dbName = "pre1";
         String userName = "root";
-        String password = "1234";
+        String password = "KataAcademy";
 
         return getMySQLConnection(hostName, dbName, userName, password);
     }
