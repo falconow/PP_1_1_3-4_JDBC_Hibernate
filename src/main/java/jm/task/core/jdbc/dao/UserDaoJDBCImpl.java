@@ -28,8 +28,8 @@ public class UserDaoJDBCImpl implements UserDao {
                     """;
             statement.execute(sql);
         } catch (SQLException e) {
-            e.printStackTrace();
             System.out.println("Error create table Users");
+            e.printStackTrace();
         } finally {
             closeConnection();
         }
@@ -42,8 +42,8 @@ public class UserDaoJDBCImpl implements UserDao {
             String sql = "DROP TABLE `Users`;";
             statement.execute(sql);
         } catch (SQLException e) {
-            e.printStackTrace();
             System.out.println("Error drop table Users");
+            e.printStackTrace();
         } finally {
             closeConnection();
         }
@@ -59,8 +59,7 @@ public class UserDaoJDBCImpl implements UserDao {
             prepareStatement.setByte(3, age);
             prepareStatement.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Error insert user");
+            throw new RuntimeException("Error save user", e);
         } finally {
             closeConnection();
         }
@@ -74,8 +73,7 @@ public class UserDaoJDBCImpl implements UserDao {
             prepareStatement.setLong(1, id);
             prepareStatement.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Error remove user");
+            throw new RuntimeException("Error remove user",e);
         } finally {
             closeConnection();
         }
@@ -89,11 +87,12 @@ public class UserDaoJDBCImpl implements UserDao {
             Statement statement = connection.prepareStatement(sql);
             ResultSet rs = statement.executeQuery(sql);
             while (rs.next()) {
-                result.add(new User(rs.getString("name"), rs.getString("lastName"), rs.getByte("age")));
+                User user = new User(rs.getString("name"), rs.getString("lastName"), rs.getByte("age"));
+                user.setId(rs.getLong("id"));
+                result.add(user);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Error select all users");
+            throw new RuntimeException("Error get all users",e);
         } finally {
             closeConnection();
         }
@@ -107,8 +106,7 @@ public class UserDaoJDBCImpl implements UserDao {
             String sql = "DELETE FROM `Users`;";
             statement.execute(sql);
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Error delete table Users");
+          throw new RuntimeException("Error delete table Users", e);
         } finally {
             closeConnection();
         }
@@ -118,11 +116,9 @@ public class UserDaoJDBCImpl implements UserDao {
         try {
             connection = Util.getMySQLConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Error connection to database");
+           throw new RuntimeException("Error connection to database", e);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("Class Connection not found");
+            throw new RuntimeException("Class Connection not found", e);
         }
     }
 
@@ -130,8 +126,8 @@ public class UserDaoJDBCImpl implements UserDao {
         try {
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
             System.out.println("Error close connection");
+            e.printStackTrace();
         }
     }
 }
