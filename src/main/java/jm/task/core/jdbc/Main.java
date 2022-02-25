@@ -26,20 +26,20 @@ public class Main {
         userService.createUsersTable();
 
         //Записываем пользователей в БД
-        for (User user: listUsers) {
-            userService.saveUser(user.getName(), user.getLastName(), user.getAge());
-            System.out.printf("User с именем – %s добавлен в базу данных", user.getName());
-            System.out.println();
-        }
-
-        //Получаем всех пользователей
-        listUsers = userService.getAllUsers();
-        System.out.println(listUsers.toString());
-
-        //Очищаем таблицу
-        userService.cleanUsersTable();
-
-        //Удаляем таблицу
-        userService.dropUsersTable();
-    }
+//        for (User user: listUsers) {
+//            userService.saveUser(user.getName(), user.getLastName(), user.getAge());
+//            System.out.printf("User с именем – %s добавлен в базу данных", user.getName());
+//            System.out.println();
+//        }
+//
+//        //Получаем всех пользователей
+//        listUsers = userService.getAllUsers();
+//        System.out.println(listUsers.toString());
+//
+//        //Очищаем таблицу
+//        userService.cleanUsersTable();
+//
+//        //Удаляем таблицу
+//        userService.dropUsersTable();
+  }
 }
