@@ -16,8 +16,8 @@ public class UserDaoHibernateImpl implements UserDao {
     public void createUsersTable() {
         Session session = Util.getEntityManagerFactory().openSession();
         session.getTransaction().begin();
-        session.createSQLQuery( """
-                    CREATE TABLE `users` (
+        int result = session.createSQLQuery( """
+                    CREATE TABLE IF NOT EXISTS `users` (
                     	`id` BIGINT NOT NULL AUTO_INCREMENT,
                     	`age` TINYINT NULL DEFAULT NULL,
                     	`lastName` VARCHAR(255) NULL DEFAULT NULL,
@@ -25,6 +25,7 @@ public class UserDaoHibernateImpl implements UserDao {
                     	PRIMARY KEY (`id`)
                     )                  
                     """).executeUpdate();
+        System.out.println();
         session.getTransaction().commit();
         session.close();
     }
