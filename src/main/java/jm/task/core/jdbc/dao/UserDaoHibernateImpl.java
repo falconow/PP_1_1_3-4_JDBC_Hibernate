@@ -11,7 +11,6 @@ public class UserDaoHibernateImpl implements UserDao {
 
     }
 
-
     @Override
     public void createUsersTable() {
         Session session = Util.getEntityManagerFactory().openSession();
@@ -32,7 +31,14 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void dropUsersTable() {
-
+        Session session = Util.getEntityManagerFactory().openSession();
+        session.getTransaction().begin();
+        int result = session.createSQLQuery( """
+                    DROP TABLE IF EXISTS `users`               
+                    """).executeUpdate();
+        System.out.println();
+        session.getTransaction().commit();
+        session.close();
     }
 
     @Override
@@ -41,21 +47,35 @@ public class UserDaoHibernateImpl implements UserDao {
         session.getTransaction().begin();
         session.save(new User(name, lastName, age));
         session.getTransaction().commit();
+        System.out.printf("User с именем – %s добавлен в базу данных", name);
+        System.out.println();
         session.close();
     }
 
     @Override
     public void removeUserById(long id) {
-
+        Session session = Util.getEntityManagerFactory().openSession();
+        session.getTransaction().begin();
+        session.createQuery("DELETE User WHERE id = :id")
+                .setParameter("id", id)
+                .executeUpdate();
+        session.close();
     }
 
     @Override
     public List<User> getAllUsers() {
-        return null;
+        Session session = Util.getEntityManagerFactory().openSession();
+        session.getTransaction().begin();
+        List<User> result =  session.createQuery("FROM User ").list();
+        session.close();
+        return result;
     }
 
     @Override
     public void cleanUsersTable() {
-
+        Session session = Util.getEntityManagerFactory().openSession();
+        session.getTransaction().begin();
+        session.createQuery("DELETE User ").executeUpdate();
+        session.close();
     }
 }
